@@ -1,14 +1,12 @@
 package com.ngogiatu.learn_api.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * Created at 16/07/2024 by Ngo Tu
@@ -28,7 +26,9 @@ public class Product {
 
     private String productname; // tên sản phẩm
 
-    private Double price; // giá sản phẩm
+   // private Double price; // giá sản phẩm
 
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    private List<ProductDetail> productDetails;
     private LocalDateTime createat; // ngày tạo
 }

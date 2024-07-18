@@ -1,5 +1,6 @@
 package com.ngogiatu.learn_api.controller;
 
+import com.ngogiatu.learn_api.dto.ProductDTO;
 import com.ngogiatu.learn_api.entity.Product;
 import com.ngogiatu.learn_api.repo.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -7,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -14,6 +17,7 @@ import java.util.Optional;
  *
  * @author: Ngo Tu
  */
+@CrossOrigin("http://localhost:4200/")
 @RestController // câu hình đây là 1 controller trả về 1 đói tượng là file json
 @RequestMapping("api/v1/product")// tạo base api cho lớp controller
 @RequiredArgsConstructor // DI các phụ thuộc vào đối tượng private final giống @Autowired
@@ -23,7 +27,12 @@ public class ProductController {
 
     @GetMapping("get-all")
     public ResponseEntity<?> getAll(){
-        return new ResponseEntity<>(productRepository.findAll(), HttpStatus.OK);
+        List<Product> listProducts = productRepository.findAll();
+        List<ProductDTO>  listDTO = new ArrayList<>();
+        for (Product p: listProducts){
+            listDTO.add(ProductDTO.productConvertToProductDTO(p));
+        }
+        return new ResponseEntity<>(listDTO, HttpStatus.OK);
     }
 
     @GetMapping("search/{id}")
